@@ -202,5 +202,5 @@ apiRoutes.post('/evm', async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Чекер запущен: http://localhost`)
+  console.log(`Чекер запущен: http://localhost:${port}`)
 })
