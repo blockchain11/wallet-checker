@@ -187,8 +187,10 @@ async function fetchWallet(wallet, index) {
 
 }
 
-function fetchWallets() {
-    wallets = readWallets('./addresses/zora.txt')
+function fetchWallets(wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/zora.txt')
+    }
     iterations = wallets.length
     iteration = 1
     jsonData = []
@@ -199,7 +201,7 @@ function fetchWallets() {
         path: './results/zora.csv',
         header: headers
     })
-    
+
     p = new Table({
         columns: columns,
         sort: (row1, row2) => +row1.n - +row2.n
@@ -234,8 +236,8 @@ export async function zoraFetchDataAndPrintTable() {
     p.printTable()
 }
 
-export async function zoraData() {
-    await fetchWallets()
+export async function zoraData(wallets) {
+    await fetchWallets(wallets)
     await addTotalRow()
     await saveToCsv()
 

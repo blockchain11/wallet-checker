@@ -363,10 +363,12 @@ async function fetchBatch(batch, network) {
     await Promise.all(batch.map((account) => fetchWallet(account, getKeyByValue(wallets, account), network)))
 }
 
-async function fetchWallets(network) {
+async function fetchWallets(network, wallets) {
     walletsData = []
     csvData = []
-    wallets = readWallets('./addresses/evm.txt')
+    if(!wallets) {
+        wallets = readWallets('./addresses/evm.txt')
+    }
     let walletPromises = []
 
     if (network === 'all') {
@@ -401,11 +403,11 @@ async function fetchWallets(network) {
     return Promise.all(walletPromises)
 }
 
-async function collectData(network) {
+async function collectData(network, wallets) {
     if (!network) {
         network = 'ETH'
     }
-    await fetchWallets(network)
+    await fetchWallets(network, wallets)
 
     let totalRow = {
         Native: 0,
@@ -476,9 +478,9 @@ export async function balancesFetchDataAndPrintTable(network) {
     await saveToCsv(network)
 }
 
-export async function balancesData(network) {
+export async function balancesData(network, wallets) {
     isJson = true
-    await collectData(network)
+    await collectData(network, wallets)
     await saveToCsv(network)
     return walletsData
 }

@@ -39,14 +39,17 @@ const balances = async (address, index, network = 'eth', compare = '<', sum = '1
 }
 
 
-const wallets = readWallets('./addresses/evm.txt')
+let wallets = readWallets('./addresses/evm.txt')
 const args = process.argv.slice(2)
 const network = args[0]
 const compare = args[1]
 const sum = args[2]
 const contract = args[3]
 
-function fetchBalances() {
+function fetchBalances(wallets) {
+    if(!!wallets){
+        wallets = readWallets('./addresses/evm.txt')
+    }
     const balancePromises = wallets.map((account, index) => balances(account, index, network, compare, sum, contract))
     return Promise.all(balancePromises)
 }

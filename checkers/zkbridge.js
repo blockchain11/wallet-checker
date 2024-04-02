@@ -149,7 +149,7 @@ async function fetchWallet(wallet, index, isExtended) {
             }
         })
     }
-    
+
     if (txs.length) {
         for (const tx of Object.values(txs)) {
             if (tx.extra.erc20) {
@@ -178,7 +178,7 @@ async function fetchWallet(wallet, index, isExtended) {
     }
 
     progressBar.update(iteration)
-    
+
     let row = {
         n: parseInt(index) + 1,
         Wallet: wallet,
@@ -227,8 +227,10 @@ async function fetchBatch(batch, isExtended) {
     await Promise.all(batch.map((account, index) => fetchWallet(account, getKeyByValue(wallets, account), isExtended)))
 }
 
-function fetchWallets(isExtended) {
-    wallets = readWallets('./addresses/zkbridge.txt')
+function fetchWallets(isExtended, wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/zkbridge.txt')
+    }
     iterations = wallets.length
     iteration = 1
     csvData = []
@@ -295,8 +297,8 @@ export async function zkbridgeFetchDataAndPrintTable(isExtended = false) {
     await saveToCsv()
 }
 
-export async function zkbridgeData() {
-    await fetchWallets()
+export async function zkbridgeData(wallets) {
+    await fetchWallets(false,wallets)
     await saveToCsv()
 
     return jsonData

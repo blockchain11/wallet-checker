@@ -204,7 +204,7 @@ async function fetchWallet(wallet, index, isExtended) {
             }
         })
     }
-    
+
     if (txs.length) {
         for (const tx of Object.values(txs)) {
             const date = new Date(timestampToDate(tx.created))
@@ -214,7 +214,7 @@ async function fetchWallet(wallet, index, isExtended) {
             uniqueSource.add(tx.srcChainKey)
             uniqueDestination.add(tx.dstChainKey)
             uniqueContracts.add(tx.dstUaAddress)
-            
+
             if (tx.srcUaProtocol) {
                 if (!protocols[tx.srcUaProtocol.id]) {
                     protocols[tx.srcUaProtocol.id] = 1
@@ -247,7 +247,7 @@ async function fetchWallet(wallet, index, isExtended) {
     }
 
     progressBar.update(iteration)
-    
+
     let row = {
         n: parseInt(index) + 1,
         Wallet: wallet,
@@ -318,8 +318,10 @@ async function fetchBatch(batch, isExtended) {
     await Promise.all(batch.map((account, index) => fetchWallet(account, getKeyByValue(wallets, account), isExtended)))
 }
 
-function fetchWallets(isExtended) {
-    wallets = readWallets('./addresses/layerzero.txt')
+function fetchWallets(isExtended, wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/layerzero.txt')
+    }
     iterations = wallets.length
     iteration = 1
     csvData = []
@@ -391,8 +393,8 @@ export async function layerzeroFetchDataAndPrintTable(isExtended = false) {
     await saveToCsv()
 }
 
-export async function layerzeroData() {
-    await fetchWallets()
+export async function layerzeroData(wallets) {
+    await fetchWallets(false, wallets)
     await saveToCsv()
 
     return jsonData

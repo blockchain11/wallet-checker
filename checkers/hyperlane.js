@@ -103,7 +103,7 @@ async function fetchWallet(wallet, index) {
             }
         })
     }
-    
+
     if (txs.length) {
         for (const tx of Object.values(txs)) {
             const date = new Date(tx.send_occurred_at)
@@ -125,7 +125,7 @@ async function fetchWallet(wallet, index) {
     }
 
     progressBar.update(iteration)
-    
+
     let row = {
         n: parseInt(index) + 1,
         Wallet: wallet,
@@ -164,8 +164,10 @@ async function fetchBatch(batch) {
     await Promise.all(batch.map((account, index) => fetchWallet(account, getKeyByValue(wallets, account))))
 }
 
-function fetchWallets() {
-    wallets = readWallets('./addresses/hyperlane.txt')
+function fetchWallets(wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/hyperlane.txt')
+    }
     iterations = wallets.length
     iteration = 1
     csvData = []
@@ -221,8 +223,8 @@ export async function hyperlaneFetchDataAndPrintTable() {
     await saveToCsv()
 }
 
-export async function hyperlaneData() {
-    await fetchWallets()
+export async function hyperlaneData(wallets) {
+    await fetchWallets(wallets)
     await saveToCsv()
 
     return jsonData

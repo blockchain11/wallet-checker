@@ -250,8 +250,10 @@ async function fetchWallet(wallet, index) {
     iteration++
 }
 
-function fetchWallets() {
-    wallets = readWallets('./addresses/aptos.txt')
+function fetchWallets(wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/aptos.txt')
+    }
     iterations = wallets.length
     iteration = 1
     csvData = []
@@ -287,8 +289,8 @@ export async function aptosFetchDataAndPrintTable() {
     p.printTable()
 }
 
-export async function aptosData() {
-    await fetchWallets()
+export async function aptosData(wallets) {
+    await fetchWallets(wallets)
     await saveToCsv()
 
     return jsonData

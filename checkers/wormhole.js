@@ -102,7 +102,7 @@ async function fetchWallet(wallet, index) {
             }
         })
     }
-    
+
     if (txs.length) {
         data.tx_count = txs.length
         for (const tx of Object.values(txs)) {
@@ -126,7 +126,7 @@ async function fetchWallet(wallet, index) {
     }
 
     progressBar.update(iteration)
-    
+
     let row = {
         n: parseInt(index) + 1,
         Wallet: wallet,
@@ -163,8 +163,10 @@ async function fetchBatch(batch) {
     await Promise.all(batch.map((account, index) => fetchWallet(account, getKeyByValue(wallets, account))))
 }
 
-function fetchWallets() {
-    wallets = readWallets('./addresses/wormhole.txt')
+function fetchWallets(wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/wormhole.txt')
+    }
     iterations = wallets.length
     iteration = 1
     csvData = []
@@ -219,8 +221,8 @@ export async function wormholeFetchDataAndPrintTable() {
     await saveToCsv()
 }
 
-export async function wormholeData() {
-    await fetchWallets()
+export async function wormholeData(wallets) {
+    await fetchWallets(wallets)
     await saveToCsv()
 
     return jsonData

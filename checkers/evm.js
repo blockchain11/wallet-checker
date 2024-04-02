@@ -116,8 +116,10 @@ async function fetchBatch(batch, chain, network) {
     await Promise.all(batch.map((account, index) => fetchWallet(account, getKeyByValue(wallets, account), chain, network)))
 }
 
-async function fetchWallets(chain, network) {
-    wallets = readWallets('./addresses/evm.txt')
+async function fetchWallets(chain, network, wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/evm.txt')
+    }
     jsonData = []
     iteration = 1
     total = 0
@@ -144,7 +146,7 @@ async function fetchWallets(chain, network) {
 }
 
 async function addTotalRow(network) {
-    total = total / Math.pow(10, 18) 
+    total = total / Math.pow(10, 18)
     p.addRow({
         'Wallet': 'Total',
         'TX Count': '',
@@ -203,7 +205,7 @@ export async function evmFetchDataAndPrintTable(network) {
     }
 }
 
-export async function evmData(network) {
+export async function evmData(network, wallets) {
     isJson = true
     let chain
     switch (network) {
@@ -223,9 +225,9 @@ export async function evmData(network) {
             chain = EvmChain.BSC
             break
     }
-    await fetchWallets(chain, network)
+    await fetchWallets(chain, network, wallets)
     await addTotalRow(network)
-    
+
     jsonData.push({
         'Wallet': 'Total',
         'TX Count': '',

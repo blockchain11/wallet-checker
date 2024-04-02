@@ -1,7 +1,7 @@
 import  '../utils/common.js'
-import { sleep, 
-    readWallets, 
-    getBalance, 
+import { sleep,
+    readWallets,
+    getBalance,
     getKeyByValue,
     getProxy,
     newAbortSignal,
@@ -60,7 +60,7 @@ const contracts = [
     {
         token: 'Linea XP',
         address: '0xd83af4fbD77f3AB65C3B1Dc4B38D7e67AEcf599A',
-        decimals: 18    
+        decimals: 18
     },
     {
         token: 'USDC',
@@ -139,7 +139,7 @@ async function getBalances(wallet) {
     stats[wallet].balances['USDC'] = 0
     stats[wallet].balances['USDT'] = 0
     stats[wallet].balances['DAI'] = 0
-    
+
     while (!tokenBalanceDone) {
         await axios.get(`https://api.w3w.ai/linea/v2/explorer/address/${wallet}/token_holdings`, {
             signal: newAbortSignal(cancelTimeout),
@@ -236,7 +236,7 @@ async function getTxs(wallet) {
         uniqueDays.add(date.toDateString())
         uniqueWeeks.add(date.getFullYear() + '-' + date.getWeek())
         uniqueMonths.add(date.getFullYear() + '-' + date.getMonth())
-        
+
         totalGasUsed += parseFloat(tx.total_transaction_fee)
 
         if (tx.from_address.toLowerCase() === wallet.toLowerCase()) {
@@ -292,7 +292,7 @@ async function fetchWallet(wallet, index) {
 
     await getBalances(wallet)
     await getTxs(wallet)
-    
+
     progressBar.update(iteration)
     total.gas += stats[wallet].total_gas
     total.xp += stats[wallet].balances['LXP'] ? parseFloat(stats[wallet].balances['LXP']) : 0
@@ -355,8 +355,10 @@ async function fetchBatch(batch) {
     await Promise.all(batch.map((account, index) => fetchWallet(account, getKeyByValue(wallets, account))))
 }
 
-async function fetchWallets() {
-    wallets = readWallets('./addresses/linea.txt')
+async function fetchWallets(wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/linea.txt')
+    }
     iterations = wallets.length
     csvData = []
     jsonData = []
@@ -374,7 +376,7 @@ async function fetchWallets() {
         path: './results/linea.csv',
         header: headers
     })
-    
+
     p = new Table({
         columns: columns,
         sort: (row1, row2) => +row1.n - +row2.n
@@ -431,8 +433,8 @@ export async function lineaFetchDataAndPrintTable() {
     p.printTable()
 }
 
-export async function lineaData() {
-    await fetchWallets()
+export async function lineaData(wallets) {
+    await fetchWallets(wallets)
     await addTotalRow()
     await saveToCsv()
 

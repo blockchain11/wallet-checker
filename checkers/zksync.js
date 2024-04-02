@@ -492,8 +492,10 @@ async function fetchWallet(wallet, index) {
     }
 }
 
-function fetchWallets() {
-    wallets = readWallets('./addresses/zksync.txt')
+function fetchWallets(wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/zksync.txt')
+    }
     iterations = wallets.length
     iteration = 1
     jsonData = []
@@ -506,12 +508,10 @@ function fetchWallets() {
         gas: 0,
         lite_eth: 0
     }
-
     csvWriter = createObjectCsvWriter({
         path: './results/zksync.csv',
         header: headers
     })
-    
     p = new Table({
         columns: columns,
         sort: (row1, row2) => +row1.n - +row2.n
@@ -578,8 +578,8 @@ export async function zkSyncFetchDataAndPrintTable() {
     p.printTable()
 }
 
-export async function zkSyncData() {
-    await fetchWallets()
+export async function zkSyncData(wallets) {
+    await fetchWallets(wallets)
     await addTotalRow()
     await saveToCsv()
 

@@ -91,7 +91,7 @@ let ethPrice = await getTokenPrice('ETH')
 async function getBalances(wallet, index) {
     let agent = getProxy(index)
     let isBalanceCollected = false
-    
+
     while (!isBalanceCollected) {
         try {
             await axios.get(apiUrl, {
@@ -321,8 +321,10 @@ async function fetchBatch(batch) {
     await Promise.all(batch.map((account, index) => fetchWallet(account, getKeyByValue(wallets, account))))
 }
 
-async function fetchWallets() {
-    wallets = readWallets('./addresses/scroll.txt')
+async function fetchWallets(wallets) {
+    if(!wallets) {
+        wallets = readWallets('./addresses/scroll.txt')
+    }
     iterations = wallets.length
     csvData = []
     jsonData = []
@@ -339,7 +341,7 @@ async function fetchWallets() {
         path: './results/scroll.csv',
         header: headers
     })
-    
+
     p = new Table({
         columns: columns,
         sort: (row1, row2) => +row1.n - +row2.n
@@ -395,8 +397,8 @@ export async function scrollFetchDataAndPrintTable() {
     p.printTable()
 }
 
-export async function scrollData() {
-    await fetchWallets()
+export async function scrollData(wallets) {
+    await fetchWallets(wallets)
     await addTotalRow()
     await saveToCsv()
 

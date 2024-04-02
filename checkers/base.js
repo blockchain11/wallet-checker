@@ -123,7 +123,7 @@ async function getTxs(wallet) {
         uniqueDays.add(date.toDateString())
         uniqueWeeks.add(date.getFullYear() + '-' + date.getWeek())
         uniqueMonths.add(date.getFullYear() + '-' + date.getMonth())
-        
+
         if (tx.to) {
             uniqueContracts.add(tx.to.hash)
         }
@@ -208,18 +208,20 @@ async function fetchWallet(wallet, index) {
     iteration++
 }
 
-function fetchWallets() {
+function fetchWallets(wallets) {
+
     csvWriter = createObjectCsvWriter({
         path: './results/base.csv',
         header: headers
     })
-    
+
     p = new Table({
         columns: columns,
         sort: (row1, row2) => +row1.n - +row2.n
     })
-
-    wallets = readWallets('./addresses/base.txt')
+    if(!wallets) {
+        wallets = readWallets('./addresses/base.txt')
+    }
     const batchSize = 50
     const batchCount = Math.ceil(wallets.length / batchSize)
     const walletPromises = []
@@ -281,8 +283,8 @@ export async function baseFetchDataAndPrintTable() {
     p.printTable()
 }
 
-export async function baseData() {
-    await fetchWallets()
+export async function baseData(wallets) {
+    await fetchWallets(wallets)
     await addTotalRow()
     await saveToCsv()
 

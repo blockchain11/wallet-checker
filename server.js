@@ -23,6 +23,7 @@ const __dirname = dirname(__filename)
 const app = express()
 const port = 80
 const apiRoutes = express.Router()
+apiRoutes.use(express.json())
 
 app.use(cors())
 app.use('/api', apiRoutes)
@@ -60,8 +61,18 @@ apiRoutes.get('/stats', async (req, res) => {
     })
 })
 
+function getReqWallets(req) {
+    return req.body.wallets
+}
+
 apiRoutes.get('/zksync', async (req, res) => {
     const responseData = await zkSyncData()
+    res.json(responseData)
+})
+
+apiRoutes.post('/zksync', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await zkSyncData(wallets)
     res.json(responseData)
 })
 
@@ -70,8 +81,20 @@ apiRoutes.get('/wormhole', async (req, res) => {
     res.json(responseData)
 })
 
+apiRoutes.post('/wormhole', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await wormholeData(wallets)
+    res.json(responseData)
+})
+
 apiRoutes.get('/layerzero', async (req, res) => {
     const responseData = await layerzeroData()
+    res.json(responseData)
+})
+
+apiRoutes.post('/layerzero', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await layerzeroData(wallets)
     res.json(responseData)
 })
 
@@ -80,8 +103,20 @@ apiRoutes.get('/zkbridge', async (req, res) => {
     res.json(responseData)
 })
 
+apiRoutes.post('/zkbridge', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await zkbridgeData(wallets)
+    res.json(responseData)
+})
+
 apiRoutes.get('/hyperlane', async (req, res) => {
     const responseData = await hyperlaneData()
+    res.json(responseData)
+})
+
+apiRoutes.post('/hyperlane', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await hyperlaneData(wallets)
     res.json(responseData)
 })
 
@@ -90,8 +125,20 @@ apiRoutes.get('/zora', async (req, res) => {
     res.json(responseData)
 })
 
+apiRoutes.post('/zora', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await zoraData(wallets)
+    res.json(responseData)
+})
+
 apiRoutes.get('/base', async (req, res) => {
     const responseData = await baseData()
+    res.json(responseData)
+})
+
+apiRoutes.post('/base', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await baseData(wallets)
     res.json(responseData)
 })
 
@@ -100,13 +147,31 @@ apiRoutes.get('/aptos', async (req, res) => {
     res.json(responseData)
 })
 
+apiRoutes.post('/aptos', async (req, res) => {
+    const wallets = getReqWallets(req)
+    const responseData = await aptosData(wallets)
+    res.json(responseData)
+})
+
 apiRoutes.get('/linea', async (req, res) => {
     const responseData = await lineaData()
     res.json(responseData)
 })
 
+apiRoutes.post('/linea', async (req, res) => {
+    let wallets = getReqWallets(req)
+    const responseData = await lineaData(wallets)
+    res.json(responseData)
+})
+
 apiRoutes.get('/scroll', async (req, res) => {
     const responseData = await scrollData()
+    res.json(responseData)
+})
+
+apiRoutes.post('/scroll', async (req, res) => {
+    let wallets = getReqWallets(req)
+    const responseData = await scrollData(wallets)
     res.json(responseData)
 })
 
@@ -116,9 +181,23 @@ apiRoutes.get('/balances', async (req, res) => {
     res.json(responseData)
 })
 
+apiRoutes.post('/balances', async (req, res) => {
+    const network = req.query.network ? req.query.network : 'eth'
+    const wallets = getReqWallets(req)
+    const responseData = await balancesData(network, wallets)
+    res.json(responseData)
+})
+
 apiRoutes.get('/evm', async (req, res) => {
     const network = req.query.network ? req.query.network : 'eth'
     const responseData = await evmData(network)
+    res.json(responseData)
+})
+
+apiRoutes.post('/evm', async (req, res) => {
+    const network = req.query.network ? req.query.network : 'eth'
+    const wallets = getReqWallets(req)
+    const responseData = await evmData(network, wallets)
     res.json(responseData)
 })
 

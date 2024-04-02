@@ -22,19 +22,22 @@ const balances = async (address, index, network = 'eth', contract = null) => {
             blockchain: network
         })
     }
-    
+
     if (data.assets.length > 0) {
         console.log(address)
     }
 }
 
 
-const wallets = readWallets('./addresses/evm.txt')
+let wallets = readWallets('./addresses/evm.txt')
 const args = process.argv.slice(2)
 const network = args[0]
 const contract = args[1]
 
-function fetchBalances() {
+function fetchBalances(wallets) {
+    if(!wallets){
+        wallets = readWallets('./addresses/evm.txt')
+    }
     const balancePromises = wallets.map((account, index) => balances(account, index, network, contract))
     return Promise.all(balancePromises)
 }
