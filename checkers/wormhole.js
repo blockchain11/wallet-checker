@@ -1,5 +1,5 @@
 import '../utils/common.js'
-import { getKeyByValue, newAbortSignal, readWallets, sleep, timestampToDate, random, getProxy, sortObjectByKey } from '../utils/common.js'
+import {sleep, readWallets, getBalance, getKeyByValue, getTokenPrice, newAbortSignal, getProxy, saveData} from '../utils/common.js'
 import axios from "axios"
 import { Table } from 'console-table-printer'
 import { createObjectCsvWriter } from 'csv-writer'
@@ -204,11 +204,7 @@ function fetchWallets(wallets) {
 }
 
 async function saveToCsv() {
-    p.table.rows.map((row) => {
-        csvData.push(row.text)
-    })
-    csvData.sort((a, b) => a.n - b.n)
-    csvWriter.writeRecords(csvData).then().catch()
+    await saveData('wormhole', columns, jsonData, csvData, csvWriter, p)
 }
 
 export async function wormholeFetchDataAndPrintTable() {

@@ -7,6 +7,9 @@ import { SocksProxyAgent } from "socks-proxy-agent"
 export const wait = ms => new Promise(r => setTimeout(r, ms))
 export const sleep = async (millis) => new Promise(resolve => setTimeout(resolve, millis))
 
+export const isSaveToFile = true
+export const isSaveToDb = false
+
 export function random(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
@@ -23,6 +26,26 @@ export function readWallets(filePath) {
         return []
     }
 }
+
+export async function saveData(network, columns, jsonData, csvData, csvWriter, p) {
+    if(isSaveToFile){
+        if(p && csvData && csvWriter){
+            p.table.rows.map((row) => {
+                csvData.push(row.text)
+            })
+            csvData.sort((a, b) => a.n - b.n)
+            csvWriter.writeRecords(csvData).then().catch()
+        }
+    }
+    if(isSaveToDb){
+        try{
+            //await syncDbChecker(network, columns, jsonData);
+        }catch (error) {
+            console.error('Error sync checker to db:', error.message)
+        }
+    }
+}
+
 
 export function writeLineToFile(filePath, line) {
     try {
@@ -185,7 +208,7 @@ export async function getTokenPrice(token) {
     let price = 0
     let isFetched = false
     let retry = 0
-    
+
     while (!isFetched) {
         const agent = getProxy()
         await axios.get(`https://min-api.cryptocompare.com/data/price?fsym=${token}&tsyms=USD`, {

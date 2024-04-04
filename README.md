@@ -1,5 +1,4 @@
 # Wallet Management Tool
-fork from https://github.com/munris-vlad/wallet-checker with russia.
 ## Installation
 `npm install`
 
@@ -10,6 +9,8 @@ To run, use `npm start`.
 ## Features
 ### Web Server
 Launches a local website where you can view all the statistics described below in the browser. It includes column sorting, highlighting low balances, etc.
+
+### Web API with wallets
 
 ### Activity Checking
 
