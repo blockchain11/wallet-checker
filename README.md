@@ -1,21 +1,19 @@
-# Инструмент работы с кошельками
-[README_en](./README_en.md)
-## Установка
-`npm install` 
+# Wallet Management Tool
+fork from https://github.com/munris-vlad/wallet-checker with russia.
+## Installation
+`npm install`
 
-Заполняем файлы адресами в папке `addresses`
+Fill in the files with addresses located in the `addresses` folder.
 
-Для запуска `npm start`
+To run, use `npm start`.
 
-## Что умеет
+## Features
+### Web Server
+Launches a local website where you can view all the statistics described below in the browser. It includes column sorting, highlighting low balances, etc.
 
-### Веб сервер
+### Activity Checking
 
-Запускает локальный сайт, с помощью которого можно смотреть всю описанную ниже статистику в браузере. Есть сортировка колонок, подсвечивание низких балансов и т.д.  
-
-### Проверка активности
-
-### Чекер сетей:
+### Network Checkers
 * ZkSync
 * Layerzero
 * Wormhole
@@ -27,25 +25,26 @@
 * Linea
 * Scroll
 
-Покажет в консоли и сохранит в csv файл следующую инфу:
-* Баланс в эфире/стейблах
-* Количество транзакций
-* Уникальные дни/недели/месяцы
-* Первая и последняя транзакции
-* Количество потраченного газа
-* Специфичную для чейна инфу
+Will display in the console and save to a CSV file the following information:
 
-### Получение балансов
+* Balance in Ether/Stable coins
+* Number of transactions
+* Unique days/weeks/months
+* First and last transactions
+* Amount of gas spent
+* Chain-specific information
 
-Покажет баланс нативного токена/usdt/usdc/dai в выбранной сети. Доступны: eth, arbitrum, optimism, polygon, bsc, avalanche.
+
+### Balance Retrieval
+
+Shows the balance of native token/USDT/USDC/DAI in the selected network. Available networks: eth, arbitrum, optimism, polygon, bsc, avalanche.
 
 ### EVM Checker
+* Number of transactions
+* Unique days/weeks/months
+* First and last transactions
+* Amount of gas spent
 
-* Количество транзакций
-* Уникальные дни/недели/месяцы
-* Первая и последняя транзакции
-* Количество потраченного газа
+It is recommended to clone this script rather than download the zip file, as it will be a universal script for wallet management, and over time, it will include functionality for checking balances on EVM networks.
 
-Этот скрипт рекомендую именно клонировать, а не качать zip - так как это будет универсальный скрипт для работы с кошельками, и со временем туда переедет функционал проверки балансов по EVM сетям.
-
-Для работы с EVM Checker нужно переименовать .env.example в .env и добавить Moralis API Key
+To use the EVM Checker, rename .env.example to .env and add the Moralis API Key.
