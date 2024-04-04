@@ -1,5 +1,5 @@
 # Инструмент работы с кошельками
-
+[README_en](./README_en.md)
 ## Установка
 `npm install` 
 
