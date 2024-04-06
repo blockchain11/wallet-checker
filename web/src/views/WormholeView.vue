@@ -91,7 +91,11 @@ export default {
     methods: {
         formatDate,
         loadData() {
-            this.$axios.get('/api/wormhole').then((response) => {
+            this.$axios.get('/api/wormhole', {
+              params: {
+                wallet: this.$route.query.wallet
+              }
+            }).then((response) => {
                 this.data = response.data.sort((a, b) => a.n - b.n)
                 this.isDataLoaded = true
             }).catch((error) => {

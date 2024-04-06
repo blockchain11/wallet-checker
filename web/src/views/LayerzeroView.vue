@@ -117,7 +117,6 @@ export default {
     methods: {
         formatDate,
         loadData() {
-          console.log(this.$route)
             this.$axios.get('/api/layerzero', {
               params: {
                 wallet: this.$route.query.wallet

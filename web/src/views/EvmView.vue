@@ -125,7 +125,8 @@ export default {
             this.activeNetwork = network
             this.$axios.get('/api/evm', {
                 params: {
-                    network: network
+                    network: network,
+                    wallet: this.$route.query.wallet
                 }
             }).then((response) => {
                 this.data = response.data.sort((a, b) => a.n - b.n)

@@ -168,7 +168,8 @@ export default {
             this.activeNetwork = network
             this.$axios.get('/api/balances', {
                 params: {
-                    network: network
+                    network: network,
+                    wallet: this.$route.query.wallet
                 }
             }).then((response) => {
                 this.data = response.data.sort((a, b) => a.n - b.n)
