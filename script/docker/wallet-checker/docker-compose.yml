@@ -7,6 +7,6 @@ services:
       context: ../../../.
       dockerfile: ./script/docker/Dockerfile
     ports:
-      - "8088:80"
+      - "8188:80"
     volumes:
       - ./proxies.txt:/app/proxies.txt

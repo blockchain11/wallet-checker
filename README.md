@@ -6,6 +6,17 @@ Fill in the files with addresses located in the `addresses` folder.
 
 To run, use `npm start`.
 
+start with docker:
+```
+cd script/docker/wallet-checker
+docker-compose up -d
+```
+
+http://localhost:8188/
+
+support with wallet
+http://localhost:8088/#/layerzero?wallet=0x111,0x222
+
 ## Features
 ### Web Server
 Launches a local website where you can view all the statistics described below in the browser. It includes column sorting, highlighting low balances, etc.
